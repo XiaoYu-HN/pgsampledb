@@ -1,1 +1,3 @@
-HR (Human Resources) is the smallest and most simple one of the Sample Schemas
+HR (Human Resources) is the smallest and most simple one of the Sample Schemas.
+
+use hr_main to create objects and populate data...
