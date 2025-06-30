@@ -9,6 +9,12 @@ CREATE ROLE dbadmin
     CREATEROLE
     PASSWORD 'Welcome1';
 
+CREATE ROLE hr LOGIN PASSWORD 'Welcome1';
+CREATE ROLE sh LOGIN PASSWORD 'Welcome1';
+
+GRANT hr to dbadmin;
+GRANT sh to dbadmin;
+
 \c postgres dbadmin
 
 CREATE DATABASE sampledb
@@ -20,5 +26,7 @@ CREATE DATABASE sampledb
 	
 \c sampledb dbadmin
 
-CREATE SCHEMA hr AUTHORIZATION dbadmin;
-CREATE SCHEMA sh AUTHORIZATION dbadmin;
+CREATE SCHEMA AUTHORIZATION hr;
+CREATE SCHEMA AUTHORIZATION sh;
+GRANT CREATE ON SCHEMA hr TO hr;
+GRANT CREATE ON SCHEMA sh TO sh;
