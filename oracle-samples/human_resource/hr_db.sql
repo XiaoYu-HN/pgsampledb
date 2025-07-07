@@ -1,6 +1,8 @@
 /*
-DROP ROLE dbadmin;
 DROP DATABASE sampledb;
+DROP ROLE dbadmin;
+DROP ROLE hr;
+DROP ROLE sh;
 */
 
 CREATE ROLE dbadmin
