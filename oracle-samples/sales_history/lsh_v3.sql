@@ -71,7 +71,7 @@
 -- sed "s/-*[0-9]\+\(\.[0-9]\+\)\?|$//g" sale1v3.dat > 1
 -- sed "s/|-*[0-9]\+\(\.[0-9]\+\)\?|$//g" 1 > 2
 -- mv 2 sale1v3_pg.dat
--- rm 1
+-- rm 1 sale1v3_pg.dat
 \copy sales from sale1v3_pg.dat
  WITH (
     FORMAT csv,
@@ -83,9 +83,16 @@
 -- COSTS
 --
 
-\! sed "s/|$//g" sale1v3.dat > sale1v3_fdw.dat
+\! sed "s/|$//g" sale1v3.dat > $PGDATA/sale1v3_fdw.dat
+
+-- use DBA user to CREATE EXTENSION and CREATE SERVER first
+/*
 CREATE EXTENSION file_fdw;
 CREATE SERVER file_server FOREIGN DATA WRAPPER file_fdw;
+GRANT USAGE ON FOREIGN SERVER file_server TO sh;
+GRANT pg_read_server_files TO sh;
+*/
+
 CREATE FOREIGN TABLE sales_transactions_ext
 ( PROD_ID               NUMERIC,
   CUST_ID               NUMERIC,
@@ -99,7 +106,7 @@ CREATE FOREIGN TABLE sales_transactions_ext
 ) SERVER file_server
 OPTIONS
 (
-format 'csv', filename '/var/lib/pgsql/db-sample-schemas/sales_history/sale1v3_fdw.dat', delimiter '|'
+format 'csv', filename 'sale1v3_fdw.dat', delimiter '|'
 );
 
 INSERT INTO costs
@@ -126,14 +133,14 @@ GROUP BY
 
 
 DROP FOREIGN TABLE sales_transactions_ext;
-\! rm sale1v3_fdw.dat
+\! rm $PGDATA/sale1v3_fdw.dat
 
 --
 -- ODM additional SALES rows
 --
 
 \! sed "s/|$//g" dmsal_v3.dat > dmsal_v3_stage.dat
-\copy sales from dmsal_v3_prep.dat
+\copy sales from dmsal_v3_stage.dat
  WITH (
     FORMAT csv,
     DELIMITER '|'

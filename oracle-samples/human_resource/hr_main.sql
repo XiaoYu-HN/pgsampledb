@@ -1,5 +1,5 @@
 
-psql -U postgres postgres -a -f hr_db.sql
+# psql -U postgres postgres -a -f hr_db.sql
 psql -U hr sampledb -a -f hr_cre.sql
 psql -U hr sampledb -a -f hr_popul.sql
 psql -U hr sampledb -a -f hr_idx.sql
